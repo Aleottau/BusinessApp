@@ -22,6 +22,7 @@
 		A9CBC75D29B697A500CDD126 /* ProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC75C29B697A500CDD126 /* ProductModel.swift */; };
 		A9CBC76029B69A0D00CDD126 /* HomeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC75F29B69A0D00CDD126 /* HomeDataSource.swift */; };
 		A9CBC76229B69D6A00CDD126 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76129B69D6A00CDD126 /* Section.swift */; };
+		A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76529B6EC4300CDD126 /* AddProductController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		A9CBC75C29B697A500CDD126 /* ProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductModel.swift; sourceTree = "<group>"; };
 		A9CBC75F29B69A0D00CDD126 /* HomeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDataSource.swift; sourceTree = "<group>"; };
 		A9CBC76129B69D6A00CDD126 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
+		A9CBC76529B6EC4300CDD126 /* AddProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductController.swift; sourceTree = "<group>"; };
 		ABC256841F49BDA1830A9236 /* Pods_BusinessApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusinessApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -207,8 +209,17 @@
 		A9CBC76329B6E95F00CDD126 /* AddProductModule */ = {
 			isa = PBXGroup;
 			children = (
+				A9CBC76429B6EB5300CDD126 /* AddProductView */,
 			);
 			path = AddProductModule;
+			sourceTree = "<group>";
+		};
+		A9CBC76429B6EB5300CDD126 /* AddProductView */ = {
+			isa = PBXGroup;
+			children = (
+				A9CBC76529B6EC4300CDD126 /* AddProductController.swift */,
+			);
+			path = AddProductView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +348,7 @@
 				A918E09A29B57A7F002243F7 /* AppDelegate.swift in Sources */,
 				A9CBC75929B677C400CDD126 /* HomeBusinessCell.swift in Sources */,
 				A918E09C29B57A7F002243F7 /* SceneDelegate.swift in Sources */,
+				A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
