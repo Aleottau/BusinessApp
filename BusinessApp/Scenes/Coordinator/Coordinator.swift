@@ -10,6 +10,7 @@ import UIKit
 
 protocol CoordinatorProtocol {
     func initialController(with prensenter: ViewModel) -> UIViewController
+    func presentAddProduct(with viewModel: ViewModel)
 }
 class Coordinator {
     var navigation: UINavigationController
@@ -24,5 +25,10 @@ extension Coordinator: CoordinatorProtocol {
         let HomeBusinnesViewController = HomeBusinnesViewController(viewModel: viewModel)
         navigation.setViewControllers([HomeBusinnesViewController], animated: false)
         return navigation
+    }
+    func presentAddProduct(with viewModel: ViewModel) {
+        let addProduct = AddProductController(viewModel: viewModel)
+//        addProduct.modalPresentationStyle = .fullScreen
+        navigation.pushViewController(addProduct, animated: true)
     }
 }

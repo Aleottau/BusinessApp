@@ -23,6 +23,7 @@
 		A9CBC76029B69A0D00CDD126 /* HomeDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC75F29B69A0D00CDD126 /* HomeDataSource.swift */; };
 		A9CBC76229B69D6A00CDD126 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76129B69D6A00CDD126 /* Section.swift */; };
 		A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76529B6EC4300CDD126 /* AddProductController.swift */; };
+		A9CBC76A29B887C300CDD126 /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76929B887C300CDD126 /* DataBaseManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		A9CBC75F29B69A0D00CDD126 /* HomeDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeDataSource.swift; sourceTree = "<group>"; };
 		A9CBC76129B69D6A00CDD126 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		A9CBC76529B6EC4300CDD126 /* AddProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductController.swift; sourceTree = "<group>"; };
+		A9CBC76929B887C300CDD126 /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
 		ABC256841F49BDA1830A9236 /* Pods_BusinessApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusinessApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -98,6 +100,7 @@
 		A918E09829B57A7F002243F7 /* BusinessApp */ = {
 			isa = PBXGroup;
 			children = (
+				A9CBC76729B7C63700CDD126 /* DataLayer */,
 				A918E0AE29B6650D002243F7 /* Scenes */,
 				A918E0AD29B664A6002243F7 /* Source */,
 				A918E0A229B57A80002243F7 /* Assets.xcassets */,
@@ -131,7 +134,6 @@
 		A918E0AF29B66539002243F7 /* HomeBusinessModule */ = {
 			isa = PBXGroup;
 			children = (
-				A918E0B229B6666F002243F7 /* Models */,
 				A918E0B129B66660002243F7 /* HomeView */,
 			);
 			path = HomeBusinessModule;
@@ -220,6 +222,23 @@
 				A9CBC76529B6EC4300CDD126 /* AddProductController.swift */,
 			);
 			path = AddProductView;
+			sourceTree = "<group>";
+		};
+		A9CBC76729B7C63700CDD126 /* DataLayer */ = {
+			isa = PBXGroup;
+			children = (
+				A9CBC76829B8879100CDD126 /* DataBase */,
+				A918E0B229B6666F002243F7 /* Models */,
+			);
+			path = DataLayer;
+			sourceTree = "<group>";
+		};
+		A9CBC76829B8879100CDD126 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				A9CBC76929B887C300CDD126 /* DataBaseManager.swift */,
+			);
+			path = DataBase;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -349,6 +368,7 @@
 				A9CBC75929B677C400CDD126 /* HomeBusinessCell.swift in Sources */,
 				A918E09C29B57A7F002243F7 /* SceneDelegate.swift in Sources */,
 				A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */,
+				A9CBC76A29B887C300CDD126 /* DataBaseManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

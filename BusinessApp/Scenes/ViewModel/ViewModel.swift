@@ -10,6 +10,7 @@ import UIKit
 
 protocol ViewModelProtocol {
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
+    func presentAddProduct()
 }
 
 class ViewModel {
@@ -22,6 +23,7 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow {
         let window = UIWindow(windowScene: windowScene)
         window.rootViewController = coordinator.initialController(with: self)
@@ -29,4 +31,7 @@ extension ViewModel: ViewModelProtocol {
         return window
     }
     
+    func presentAddProduct() {
+        coordinator.presentAddProduct(with: self)
+    }
 }

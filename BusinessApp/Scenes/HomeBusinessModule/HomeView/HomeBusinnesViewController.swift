@@ -37,12 +37,16 @@ class HomeBusinnesViewController: UIViewController {
     }
     private func navigationBar() {
         navigationItem.title = "Lista de negocios"
-        let settings = UIBarButtonItem(title: "", style: .done, target: self, action: nil )
-        settings.image = UIImage(systemName: "plus.circle")
-        self.navigationItem.setRightBarButton(settings, animated: true)
-        let backButton = self.navigationItem.backBarButtonItem
-        backButton?.title = ""
-        backButton?.image = UIImage(systemName: "x.circle")
+        let addProduct = UIBarButtonItem(title: "", style: .done, target: self, action: #selector(addProduct) )
+        addProduct.image = UIImage(systemName: "plus.circle")
+        self.navigationItem.setRightBarButton(addProduct, animated: true)
+        self.navigationItem.backButtonTitle = ""
+        let backButton = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
+        
+        self.navigationItem.backBarButtonItem = backButton
+    }
+    @objc private func addProduct() {
+        viewModel.presentAddProduct()
     }
     
     private func makeConstraints() {
