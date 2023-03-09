@@ -16,8 +16,8 @@ protocol HomeDataSourceProtocol {
 class HomeDataSource {
     var products: [ProductModel] = []
     var collectionView: UICollectionView
-    typealias DiffDataSource = UICollectionViewDiffableDataSource<Section, Int>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Int>
+    typealias DiffDataSource = UICollectionViewDiffableDataSource<Section, Int32>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Int32>
     lazy var dataSource: HomeDataSource.DiffDataSource = makeDataSource()
     
     init(collectionView: UICollectionView, products: [ProductModel]) {
@@ -29,7 +29,7 @@ class HomeDataSource {
         let nib = UINib(nibName: identifier, bundle: nil)
         collection.register(nib, forCellWithReuseIdentifier: identifier )
     }
-    private func modelFrom(itemIdentifier: Int) -> ProductModel? {
+    private func modelFrom(itemIdentifier: Int32) -> ProductModel? {
         return products.first { $0.id == itemIdentifier }
     }
     

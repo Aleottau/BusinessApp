@@ -24,6 +24,8 @@
 		A9CBC76229B69D6A00CDD126 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76129B69D6A00CDD126 /* Section.swift */; };
 		A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76529B6EC4300CDD126 /* AddProductController.swift */; };
 		A9CBC76A29B887C300CDD126 /* DataBaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76929B887C300CDD126 /* DataBaseManager.swift */; };
+		A9CBC76D29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76B29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld */; };
+		A9CBC76F29B8F6B400CDD126 /* ProductCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CBC76E29B8F6B400CDD126 /* ProductCoreData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,8 @@
 		A9CBC76129B69D6A00CDD126 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		A9CBC76529B6EC4300CDD126 /* AddProductController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProductController.swift; sourceTree = "<group>"; };
 		A9CBC76929B887C300CDD126 /* DataBaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseManager.swift; sourceTree = "<group>"; };
+		A9CBC76C29B8F4A400CDD126 /* ProductModelDb.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProductModelDb.xcdatamodel; sourceTree = "<group>"; };
+		A9CBC76E29B8F6B400CDD126 /* ProductCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCoreData.swift; sourceTree = "<group>"; };
 		ABC256841F49BDA1830A9236 /* Pods_BusinessApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BusinessApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -227,6 +231,7 @@
 		A9CBC76729B7C63700CDD126 /* DataLayer */ = {
 			isa = PBXGroup;
 			children = (
+				A9CBC76929B887C300CDD126 /* DataBaseManager.swift */,
 				A9CBC76829B8879100CDD126 /* DataBase */,
 				A918E0B229B6666F002243F7 /* Models */,
 			);
@@ -236,7 +241,8 @@
 		A9CBC76829B8879100CDD126 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
-				A9CBC76929B887C300CDD126 /* DataBaseManager.swift */,
+				A9CBC76B29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld */,
+				A9CBC76E29B8F6B400CDD126 /* ProductCoreData.swift */,
 			);
 			path = DataBase;
 			sourceTree = "<group>";
@@ -357,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9CBC75529B674EC00CDD126 /* CompositionalLayout.swift in Sources */,
+				A9CBC76D29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld in Sources */,
 				A9CBC76029B69A0D00CDD126 /* HomeDataSource.swift in Sources */,
 				A9CBC75229B66DDD00CDD126 /* Interactor.swift in Sources */,
 				A9CBC74F29B66D4500CDD126 /* ViewModel.swift in Sources */,
@@ -369,6 +376,7 @@
 				A918E09C29B57A7F002243F7 /* SceneDelegate.swift in Sources */,
 				A9CBC76629B6EC4300CDD126 /* AddProductController.swift in Sources */,
 				A9CBC76A29B887C300CDD126 /* DataBaseManager.swift in Sources */,
+				A9CBC76F29B8F6B400CDD126 /* ProductCoreData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -576,6 +584,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		A9CBC76B29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				A9CBC76C29B8F4A400CDD126 /* ProductModelDb.xcdatamodel */,
+			);
+			currentVersion = A9CBC76C29B8F4A400CDD126 /* ProductModelDb.xcdatamodel */;
+			path = ProductModelDb.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = A918E08E29B57A7F002243F7 /* Project object */;
 }

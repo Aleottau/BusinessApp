@@ -32,7 +32,7 @@ class HomeBusinessCell: UICollectionViewCell {
     }
     
     func setModel(model: ProductModel) {
-        titleLabel.text = model.title
+        titleLabel.text = model.nameProduct
         phoneNumberLabel.text = model.phoneNumber
         overviewLabel.text = model.overview
     }

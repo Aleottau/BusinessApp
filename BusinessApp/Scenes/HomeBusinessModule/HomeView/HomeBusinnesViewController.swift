@@ -13,7 +13,7 @@ class HomeBusinnesViewController: UIViewController {
     let viewModel: ViewModelProtocol
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: CompositionalLayout().generateLayout())
     var setUpDataSource: HomeDataSource?
-    var products: [ProductModel] = [ProductModel(id: 1, title: "producto 1", phoneNumber: "+57 300 555 6578", overview: "este producto es de buena calidad"),ProductModel(id: 2, title: "producto 2", phoneNumber: "+57 311 444 6578", overview: "este producto es de buena calidad"),ProductModel(id: 3, title: "producto 3", phoneNumber: "+57 322 333 6578", overview: "este producto es de buena calidad")]
+    var products: [ProductModel] = [ProductModel(id: 1, nameProduct: "producto 1", phoneNumber: "+57 300 555 6578", overview: "este producto es de buena calidad"),ProductModel(id: 2, nameProduct: "producto 2", phoneNumber: "+57 311 444 6578", overview: "este producto es de buena calidad"),ProductModel(id: 3, nameProduct: "producto 3", phoneNumber: "+57 322 333 6578", overview: "este producto es de buena calidad")]
     
     init(viewModel: ViewModelProtocol) {
         self.viewModel = viewModel
