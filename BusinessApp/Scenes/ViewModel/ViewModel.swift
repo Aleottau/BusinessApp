@@ -11,6 +11,8 @@ import UIKit
 protocol ViewModelProtocol {
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
+    func saveProductInDb(product: ProductModel)
+    func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
 }
 
 class ViewModel {
@@ -23,6 +25,15 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    
+    func saveProductInDb(product: ProductModel) {
+        interactor.saveProductInDb(product: product)
+    }
+    
+    func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void) {
+        interactor.getProductsFromDb(completion: completion)
+    }
+    
     
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow {
         let window = UIWindow(windowScene: windowScene)

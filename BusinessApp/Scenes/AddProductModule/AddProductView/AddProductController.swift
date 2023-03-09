@@ -179,7 +179,12 @@ class AddProductController: UIViewController {
         button.configuration = buttonConfig
     }
     
-    
+    func saveButtonAction() {
+        saveButton.addTarget(self, action: #selector(pressSaveButton), for: .touchUpInside)
+    }
+    @objc private func pressSaveButton() {
+        
+    }
     
 
 }

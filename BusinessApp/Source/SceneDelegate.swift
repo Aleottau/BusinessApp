@@ -18,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let coordinator = Coordinator(navigation: UINavigationController())
-        let interactor = Interactor()
+        let interactor = Interactor(dataBaseManager: DataBaseManager())
         let viewModel = ViewModel(coordinator: coordinator, interactor: interactor)
         self.window = viewModel.setUpInitial(windowScene: windowScene)
         
