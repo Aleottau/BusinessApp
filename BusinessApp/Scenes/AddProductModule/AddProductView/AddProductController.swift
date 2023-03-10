@@ -21,6 +21,17 @@ class AddProductController: UIViewController {
     var addPhotoButton = UIButton()
     var saveButton = UIButton()
     
+    // lleno
+    var currentName: String?
+    // lleno
+    var currentPhoneNumber: String?
+    // lleno
+    var currentOverview: String?
+    // lleno
+    var currentPickImage: UIImage?
+    // lleno
+    var lastId: Int32?
+    
     let viewModel: ViewModelProtocol
     
     init(viewModel: ViewModelProtocol) {
@@ -91,7 +102,7 @@ class AddProductController: UIViewController {
         photo.snp.makeConstraints { make in
             make.top.equalTo(overviewTextView.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(40)
-            make.trailing.equalToSuperview().inset(230)
+            make.trailing.equalToSuperview().inset(150)
         }
         addPhotoButton.snp.makeConstraints { make in
             make.top.equalTo(photo.snp.bottom).offset(10)
@@ -110,7 +121,15 @@ class AddProductController: UIViewController {
         view.backgroundColor = UIColor.white
         makeConstraints()
         setUpviewComponents()
+        nameTextField.delegate = self
+        phoneNumberTextField.delegate = self
         overviewTextView.delegate = self
+        addPhoto()
+        deletePhoto()
+        saveButtonAction()
+        photo.isEnabled = false
+        photo.isHidden = true
+        lastId = viewModel.getLastIdFromDb()
     }
     
     private func setUpviewComponents() {
@@ -122,7 +141,6 @@ class AddProductController: UIViewController {
         defaulttLabelConfig(label: overview, text: "Acerca de")
         overviewTextViewConfig(textView: overviewTextView, text: "Cuentanos sobre tu negocio")
         addButtonConfig(button: addPhotoButton)
-        photoButtonConfig(button: photo, setTitle: "foto.png")
         saveButtonConfig(button: saveButton, setTitle: "Guardar")
     }
     private func titleLabelConfig(label: UILabel, text: String) {
@@ -178,21 +196,86 @@ class AddProductController: UIViewController {
         button.setTitle(setTitle, for: .normal)
         button.configuration = buttonConfig
     }
+    private func getSubStringForPhoto(url: NSURL?) -> String {
+        guard let text = url?.absoluteString else {
+            return "defaulName.jpg"
+        }
+        let start = text.index(text.startIndex, offsetBy: 36)
+        let end = text.index(text.endIndex, offsetBy: -36)
+        let range = start..<end
+        return String(text[range])
+    }
     
-    func saveButtonAction() {
+    private func addPhoto() {
+        addPhotoButton.addTarget(self, action: #selector(pressAddPhoto), for: .touchUpInside)
+    }
+    @objc private func pressAddPhoto() {
+        let pickController = UIImagePickerController()
+        pickController.sourceType = .photoLibrary
+        pickController.delegate = self
+        pickController.allowsEditing = true
+        present(pickController, animated: true)
+    }
+    private func deletePhoto() {
+        photo.addTarget(self, action: #selector(pressDeletePhoto), for: .touchUpInside)
+    }
+    @objc private func pressDeletePhoto() {
+        self.currentPickImage = nil
+        self.photo.isHidden = true
+        self.photo.isEnabled = false
+    }
+    
+    private func saveButtonAction() {
         saveButton.addTarget(self, action: #selector(pressSaveButton), for: .touchUpInside)
     }
     @objc private func pressSaveButton() {
-        
+        guard let lastId = lastId, let currentName = currentName, let currentPhoneNumber = currentPhoneNumber else {
+            showAlert()
+            return
+        }
+        let product = ProductModel(id: lastId, nameProduct: currentName, phoneNumber: currentPhoneNumber, overview: currentOverview ?? "")
+        viewModel.saveProductInDb(product: product)
+        viewModel.presentHomeView()
+    }
+    private func showAlert() {
+        lazy var alert = UIAlertController(title: "Ups", message: "Favor llenar todos los campos", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: { _ in
+        }))
+        present(alert, animated: true)
     }
     
 
+}
+
+extension AddProductController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let imageFromGalery = info[.editedImage] as? UIImage else {
+            return
+        }
+        self.currentPickImage = imageFromGalery
+        let photoUrl = info[.referenceURL] as? NSURL
+        let namePhoto = self.getSubStringForPhoto(url: photoUrl)
+        self.photoButtonConfig(button: photo, setTitle: "\(namePhoto)" + ".jpg")
+        self.photo.isHidden = false
+        self.photo.isEnabled = true
+        picker.dismiss(animated: true)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        if photo.isEnabled {
+            picker.dismiss(animated: true)
+        } else {
+            self.photo.isHidden = true
+            self.photo.isEnabled = false
+            picker.dismiss(animated: true)
+        }
+    }
 }
 
 
 extension  AddProductController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if overviewTextView.text.isEmpty || overviewTextView.text == "Cuentanos sobre tu negocio" {
+            self.currentOverview = nil
             overviewTextView.text = nil
             overviewTextView.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
             overviewTextView.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -200,8 +283,21 @@ extension  AddProductController: UITextViewDelegate {
     }
     func textViewDidEndEditing(_ textView: UITextView) {
         if overviewTextView.text.isEmpty {
+            self.currentOverview = nil
             overviewTextView.textColor = #colorLiteral(red: 0.7472397685, green: 0.7571908832, blue: 0.7699201703, alpha: 1)
             overviewTextView.text =  "Cuentanos sobre tu negocio"
+            
+        } else {
+            self.currentOverview = textView.text
         }
     }
 }
+
+extension AddProductController: UITextFieldDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.currentName = nameTextField.text
+        self.currentPhoneNumber = phoneNumberTextField.text
+    }
+}
+                   

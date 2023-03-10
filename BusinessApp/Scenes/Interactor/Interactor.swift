@@ -10,6 +10,7 @@ import Foundation
 protocol InteractorProtocol {
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
+    func getLastIdFromDb() -> Int32
 }
 
 class Interactor {
@@ -20,6 +21,10 @@ class Interactor {
     
 }
 extension Interactor: InteractorProtocol {
+    func getLastIdFromDb() -> Int32 {
+        return dataBaseManager.getLastIdFromDb()
+    }
+    
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void) {
         dataBaseManager.getProductFromDb(completion: completion)
     }

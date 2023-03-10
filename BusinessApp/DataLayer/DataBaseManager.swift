@@ -15,6 +15,7 @@ protocol DataBaseManagerProtocol {
     // save product
     func saveProductInDb(product: ProductModel)
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void)
+    func getLastIdFromDb() -> Int32
 }
 
 class DataBaseManager {
@@ -31,6 +32,13 @@ class DataBaseManager {
 }
 
 extension DataBaseManager: DataBaseManagerProtocol {
+    func getLastIdFromDb() -> Int32 {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
+        guard let productResult = try? self.getContext().fetch(fetchRequest) as? [ProductCoreData], let lastId = productResult.last?.id else {
+            return 1
+        }
+        return lastId + 1
+    }
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
         do {

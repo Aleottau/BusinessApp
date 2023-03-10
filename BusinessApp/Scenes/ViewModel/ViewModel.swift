@@ -11,8 +11,10 @@ import UIKit
 protocol ViewModelProtocol {
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
+    func presentHomeView()
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
+    func getLastIdFromDb() -> Int32
 }
 
 class ViewModel {
@@ -25,6 +27,10 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    func getLastIdFromDb() -> Int32 {
+        return interactor.getLastIdFromDb()
+    }
+    
     
     func saveProductInDb(product: ProductModel) {
         interactor.saveProductInDb(product: product)
@@ -44,5 +50,8 @@ extension ViewModel: ViewModelProtocol {
     
     func presentAddProduct() {
         coordinator.presentAddProduct(with: self)
+    }
+    func presentHomeView() {
+        coordinator.presentHomeView(with: self)
     }
 }
