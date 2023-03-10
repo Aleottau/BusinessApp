@@ -7,13 +7,17 @@
 
 import Foundation
 import CoreData
+enum DataBaseError: Error {
+    case notSaved
+    case notDeleted
+}
 
 protocol DataBaseManagerProtocol {
     static var persistentContainer: NSPersistentContainer { get }
     func getContext() -> NSManagedObjectContext
-    func saveContext()
+    func saveContext() throws
     // save product
-    func saveProductInDb(product: ProductModel)
+    func saveProductInDb(product: ProductModel) throws
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
 }
@@ -53,25 +57,26 @@ extension DataBaseManager: DataBaseManagerProtocol {
         }
     }
     
-    func saveProductInDb(product: ProductModel) {
+    func saveProductInDb(product: ProductModel) throws {
         let productCD = ProductCoreData(managedObjectContext: self.getContext())
         productCD?.addData(with: product)
-        self.saveContext()
+        try self.saveContext()
         getContext().reset()
+        // crear observable
     }
     // MARK: - CONTEXT FUNCTION
     func getContext() -> NSManagedObjectContext {
         return DataBaseManager.persistentContainer.viewContext
     }
 
-    func saveContext() {
+    func saveContext() throws {
         let context = DataBaseManager.persistentContainer.viewContext
         if context.hasChanges {
             do {
                 try context.save()
             } catch {
                 let nserror = error as NSError
-                fatalError("Unresolved error \(nserror)")
+                throw DataBaseError.notSaved
             }
         }
     }

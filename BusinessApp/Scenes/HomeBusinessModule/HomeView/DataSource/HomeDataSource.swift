@@ -43,6 +43,12 @@ class HomeDataSource {
         }
         return dataSource
     }
+    func addProduct(newProduct: ProductModel) {
+        products.append(newProduct)
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems([newProduct.id], toSection: .home)
+        self.dataSource.apply(snapshot, animatingDifferences: true)
+    }
 }
 extension HomeDataSource: HomeDataSourceProtocol {
     func applySnapshot(animatingDiff: Bool = true) {

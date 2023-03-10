@@ -7,11 +7,14 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 protocol ViewModelProtocol {
+    var rxProduct: Observable<ProductModel> { get }
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
+    func presentProductDetailController(for product: ProductModel)
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
@@ -27,6 +30,10 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    var rxProduct: RxSwift.Observable<ProductModel> {
+        return interactor.rxProduct.asObservable()
+    }
+    
     func getLastIdFromDb() -> Int32 {
         return interactor.getLastIdFromDb()
     }
@@ -53,5 +60,8 @@ extension ViewModel: ViewModelProtocol {
     }
     func presentHomeView() {
         coordinator.presentHomeView(with: self)
+    }
+    func presentProductDetailController(for product: ProductModel) {
+        coordinator.presentProductDetail(for: product, with: self)
     }
 }

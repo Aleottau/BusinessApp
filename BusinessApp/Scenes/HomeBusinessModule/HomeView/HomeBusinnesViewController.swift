@@ -7,13 +7,15 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 class HomeBusinnesViewController: UIViewController {
-
+    
+    let disposeBag = DisposeBag()
     let viewModel: ViewModelProtocol
     var collectionView = UICollectionView(frame: .zero, collectionViewLayout: CompositionalLayout().generateLayout())
-    var setUpDataSource: HomeDataSource?
-    var products: [ProductModel] = [ProductModel(id: 1, nameProduct: "producto 1", phoneNumber: "+57 300 555 6578", overview: "este producto es de buena calidad"),ProductModel(id: 2, nameProduct: "producto 2", phoneNumber: "+57 311 444 6578", overview: "este producto es de buena calidad"),ProductModel(id: 3, nameProduct: "producto 3", phoneNumber: "+57 322 333 6578", overview: "este producto es de buena calidad")]
+    var homeDataSource: HomeDataSource?
+  
     
     init(viewModel: ViewModelProtocol) {
         self.viewModel = viewModel
@@ -29,11 +31,23 @@ class HomeBusinnesViewController: UIViewController {
         view.backgroundColor = UIColor.white
         navigationBar()
         makeConstraints()
-        setUpDataSource = HomeDataSource(collectionView: collectionView, products: products)
-        setUpDataSource?.applySnapshot()
-        collectionView.dataSource = setUpDataSource?.dataSource
-        
-        // Do any additional setup after loading the view.
+        getProductsFromDb()
+        viewModel.rxProduct.asObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] product in
+            self?.homeDataSource?.addProduct(newProduct: product)
+        }).disposed(by: disposeBag )
+    }
+    func getProductsFromDb() {
+        viewModel.getProductsFromDb { [weak self] products in
+            guard let collectionView = self?.collectionView else {
+                return
+            }
+            self?.homeDataSource = HomeDataSource(collectionView: collectionView, products: products)
+            self?.homeDataSource?.applySnapshot()
+            collectionView.dataSource = self?.homeDataSource?.dataSource
+            collectionView.delegate = self
+        }
     }
     private func navigationBar() {
         navigationItem.title = "Lista de negocios"
@@ -59,3 +73,12 @@ class HomeBusinnesViewController: UIViewController {
 
 }
 
+extension HomeBusinnesViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let indexCell = indexPath.row
+        guard let product = homeDataSource?.products[indexCell] else {
+            return
+        }
+        viewModel.presentProductDetailController(for: product)
+    }
+}

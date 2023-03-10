@@ -9,9 +9,11 @@ import UIKit
 
 class ProductDetailController: UIViewController {
     var productImage =  UIImageView()
-    
+    var product: ProductModel
     let viewModel: ViewModelProtocol
-    init(viewModel: ViewModelProtocol) {
+    
+    init(product: ProductModel, viewModel: ViewModelProtocol) {
+        self.product = product
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }

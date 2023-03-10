@@ -11,7 +11,7 @@ import UIKit
 protocol CoordinatorProtocol {
     func initialController(with prensenter: ViewModel) -> UIViewController
     func presentAddProduct(with viewModel: ViewModel)
-    func presentProductDetail(with viewModel: ViewModel)
+    func presentProductDetail(for product: ProductModel, with viewModel: ViewModel)
     func presentHomeView(with viewModel: ViewModel)
 }
 class Coordinator {
@@ -33,8 +33,8 @@ extension Coordinator: CoordinatorProtocol {
 //        addProduct.modalPresentationStyle = .fullScreen
         navigation.pushViewController(addProduct, animated: true)
     }
-    func presentProductDetail(with viewModel: ViewModel) {
-        let productDetail = ProductDetailController(viewModel: viewModel)
+    func presentProductDetail(for product: ProductModel, with viewModel: ViewModel) {
+        let productDetail = ProductDetailController(product: product, viewModel: viewModel)
         navigation.pushViewController(productDetail, animated: true)
     }
     func presentHomeView(with viewModel: ViewModel) {

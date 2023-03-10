@@ -29,8 +29,6 @@ class AddProductController: UIViewController {
     var currentOverview: String?
     // lleno
     var currentPickImage: UIImage?
-    // lleno
-    var lastId: Int32?
     
     let viewModel: ViewModelProtocol
     
@@ -129,7 +127,6 @@ class AddProductController: UIViewController {
         saveButtonAction()
         photo.isEnabled = false
         photo.isHidden = true
-        lastId = viewModel.getLastIdFromDb()
     }
     
     private func setUpviewComponents() {
@@ -229,11 +226,12 @@ class AddProductController: UIViewController {
         saveButton.addTarget(self, action: #selector(pressSaveButton), for: .touchUpInside)
     }
     @objc private func pressSaveButton() {
-        guard let lastId = lastId, let currentName = currentName, let currentPhoneNumber = currentPhoneNumber else {
+        guard let currentName = currentName, let currentPhoneNumber = currentPhoneNumber else {
             showAlert()
             return
         }
-        let product = ProductModel(id: lastId, nameProduct: currentName, phoneNumber: currentPhoneNumber, overview: currentOverview ?? "")
+        // cambiar a interactor
+        let product = ProductModel(id: viewModel.getLastIdFromDb(), nameProduct: currentName, phoneNumber: currentPhoneNumber, overview: currentOverview ?? "")
         viewModel.saveProductInDb(product: product)
         viewModel.presentHomeView()
     }

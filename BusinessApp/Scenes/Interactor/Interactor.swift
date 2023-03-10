@@ -6,14 +6,17 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol InteractorProtocol {
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
+    var rxProduct: PublishSubject<ProductModel> { get }
 }
 
 class Interactor {
+    let rxProduct = PublishSubject<ProductModel>()
     let dataBaseManager: DataBaseManagerProtocol
     init(dataBaseManager: DataBaseManagerProtocol) {
         self.dataBaseManager = dataBaseManager
@@ -30,7 +33,14 @@ extension Interactor: InteractorProtocol {
     }
     
     func saveProductInDb(product: ProductModel) {
-        dataBaseManager.saveProductInDb(product: product)
+        do {
+            try dataBaseManager.saveProductInDb(product: product)
+            rxProduct.onNext(product)
+        } catch {
+            
+        }
+        
+        
     }
     
     
