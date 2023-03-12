@@ -31,9 +31,10 @@ class HomeBusinessCell: UICollectionViewCell {
         productImage.image = nil
     }
     
-    func setModel(model: ProductModel) {
+    func setModel(model: ProductModel, imageFromLocalFile: UIImage?) {
         titleLabel.text = model.nameProduct
         phoneNumberLabel.text = model.phoneNumber
         overviewLabel.text = model.overview
+        productImage.image = imageFromLocalFile
     }
 }

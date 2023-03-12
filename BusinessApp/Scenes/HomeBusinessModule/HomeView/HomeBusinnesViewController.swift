@@ -43,7 +43,7 @@ class HomeBusinnesViewController: UIViewController {
             guard let collectionView = self?.collectionView else {
                 return
             }
-            self?.homeDataSource = HomeDataSource(collectionView: collectionView, products: products)
+            self?.homeDataSource = HomeDataSource(collectionView: collectionView, products: products, viewModel: self!.viewModel)
             self?.homeDataSource?.applySnapshot()
             collectionView.dataSource = self?.homeDataSource?.dataSource
             collectionView.delegate = self
@@ -79,6 +79,7 @@ extension HomeBusinnesViewController: UICollectionViewDelegate {
         guard let product = homeDataSource?.products[indexCell] else {
             return
         }
-        viewModel.presentProductDetailController(for: product)
+        let imageId = String(indexCell + 1)
+        viewModel.presentProductDetailController(for: product, image: viewModel.getImageFromLocalFile(imageId: imageId))
     }
 }

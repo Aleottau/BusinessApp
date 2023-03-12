@@ -35,7 +35,7 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="screenNegocio" translatesAutoresizingMaskIntoConstraints="NO" id="pR1-tx-2dv">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pR1-tx-2dv">
                         <rect key="frame" x="254" y="8" width="106" height="116"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="106" id="eSo-C6-M5D"/>
@@ -78,7 +78,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="screenNegocio" width="978" height="1062"/>
         <systemColor name="systemGray4Color">
             <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

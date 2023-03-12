@@ -16,13 +16,15 @@ protocol HomeDataSourceProtocol {
 class HomeDataSource {
     var products: [ProductModel] = []
     var collectionView: UICollectionView
+    var viewModel: ViewModelProtocol
     typealias DiffDataSource = UICollectionViewDiffableDataSource<Section, Int32>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Int32>
     lazy var dataSource: HomeDataSource.DiffDataSource = makeDataSource()
     
-    init(collectionView: UICollectionView, products: [ProductModel]) {
+    init(collectionView: UICollectionView, products: [ProductModel], viewModel: ViewModelProtocol) {
         self.collectionView = collectionView
         self.products = products
+        self.viewModel = viewModel
         registerCell(collection: collectionView, identifier: HomeBusinessCell.identifier)
     }
     private func registerCell(collection: UICollectionView, identifier: String) {
@@ -38,7 +40,9 @@ class HomeDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeBusinessCell.identifier, for: indexPath) as? HomeBusinessCell, let product = self?.modelFrom(itemIdentifier: itemIdentifier) else {
                 return UICollectionViewCell()
             }
-            cell.setModel(model: product)
+            
+            let imageFromLocalFile = self?.viewModel.getImageFromLocalFile(imageId: String(itemIdentifier))
+            cell.setModel(model: product, imageFromLocalFile: imageFromLocalFile)
             return cell
         }
         return dataSource

@@ -20,14 +20,10 @@ class AddProductController: UIViewController {
     var photo = UIButton()
     var addPhotoButton = UIButton()
     var saveButton = UIButton()
-    
-    // lleno
+    // current data
     var currentName: String?
-    // lleno
     var currentPhoneNumber: String?
-    // lleno
     var currentOverview: String?
-    // lleno
     var currentPickImage: UIImage?
     
     let viewModel: ViewModelProtocol
@@ -195,7 +191,7 @@ class AddProductController: UIViewController {
     }
     private func getSubStringForPhoto(url: NSURL?) -> String {
         guard let text = url?.absoluteString else {
-            return "defaulName.jpg"
+            return "defaulName.jpeg"
         }
         let start = text.index(text.startIndex, offsetBy: 36)
         let end = text.index(text.endIndex, offsetBy: -36)
@@ -226,13 +222,15 @@ class AddProductController: UIViewController {
         saveButton.addTarget(self, action: #selector(pressSaveButton), for: .touchUpInside)
     }
     @objc private func pressSaveButton() {
-        guard let currentName = currentName, let currentPhoneNumber = currentPhoneNumber else {
+        guard let currentName = currentName, let currentPhoneNumber = currentPhoneNumber, let currentPickImage = currentPickImage else {
             showAlert()
             return
         }
         // cambiar a interactor
-        let product = ProductModel(id: viewModel.getLastIdFromDb(), nameProduct: currentName, phoneNumber: currentPhoneNumber, overview: currentOverview ?? "")
+        let lastId = viewModel.getLastIdFromDb()
+        let product = viewModel.createNewProduct(id: lastId, nameProduct: currentName, phoneNumber: currentPhoneNumber, overview: currentOverview ?? "")
         viewModel.saveProductInDb(product: product)
+        viewModel.saveImageInLocalFile(image: currentPickImage, imageId: String(lastId))
         viewModel.presentHomeView()
     }
     private func showAlert() {
@@ -253,7 +251,7 @@ extension AddProductController: UINavigationControllerDelegate, UIImagePickerCon
         self.currentPickImage = imageFromGalery
         let photoUrl = info[.referenceURL] as? NSURL
         let namePhoto = self.getSubStringForPhoto(url: photoUrl)
-        self.photoButtonConfig(button: photo, setTitle: "\(namePhoto)" + ".jpg")
+        self.photoButtonConfig(button: photo, setTitle: "\(namePhoto)" + ".jpeg")
         self.photo.isHidden = false
         self.photo.isEnabled = true
         picker.dismiss(animated: true)

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		09FCD7FD6D41A2AD29E5D35A /* Pods_BusinessApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC256841F49BDA1830A9236 /* Pods_BusinessApp.framework */; };
 		A917305729BA94B0001D1FCF /* ProductDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A917305629BA94B0001D1FCF /* ProductDetailController.swift */; };
+		A917305929BC0FC2001D1FCF /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A917305829BC0FC2001D1FCF /* LocalFileManager.swift */; };
 		A918E09A29B57A7F002243F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A918E09929B57A7F002243F7 /* AppDelegate.swift */; };
 		A918E09C29B57A7F002243F7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A918E09B29B57A7F002243F7 /* SceneDelegate.swift */; };
 		A918E09E29B57A7F002243F7 /* HomeBusinnesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A918E09D29B57A7F002243F7 /* HomeBusinnesViewController.swift */; };
@@ -33,6 +34,7 @@
 		1693C24D613FB561300EFEE7 /* Pods-BusinessApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusinessApp.release.xcconfig"; path = "Target Support Files/Pods-BusinessApp/Pods-BusinessApp.release.xcconfig"; sourceTree = "<group>"; };
 		6CDC42F68DAFAE2205FE480D /* Pods-BusinessApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BusinessApp.debug.xcconfig"; path = "Target Support Files/Pods-BusinessApp/Pods-BusinessApp.debug.xcconfig"; sourceTree = "<group>"; };
 		A917305629BA94B0001D1FCF /* ProductDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailController.swift; sourceTree = "<group>"; };
+		A917305829BC0FC2001D1FCF /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		A918E09629B57A7F002243F7 /* BusinessApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BusinessApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A918E09929B57A7F002243F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A918E09B29B57A7F002243F7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 				A9CBC76929B887C300CDD126 /* DataBaseManager.swift */,
 				A9CBC76829B8879100CDD126 /* DataBase */,
 				A918E0B229B6666F002243F7 /* Models */,
+				A917305829BC0FC2001D1FCF /* LocalFileManager.swift */,
 			);
 			path = DataLayer;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A917305929BC0FC2001D1FCF /* LocalFileManager.swift in Sources */,
 				A917305729BA94B0001D1FCF /* ProductDetailController.swift in Sources */,
 				A9CBC75529B674EC00CDD126 /* CompositionalLayout.swift in Sources */,
 				A9CBC76D29B8F4A400CDD126 /* ProductModelDb.xcdatamodeld in Sources */,

@@ -14,10 +14,13 @@ protocol ViewModelProtocol {
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
-    func presentProductDetailController(for product: ProductModel)
+    func presentProductDetailController(for product: ProductModel, image: UIImage?)
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
+    func getImageFromLocalFile(imageId: String) -> UIImage?
+    func saveImageInLocalFile(image: UIImage, imageId: String)
+    func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
 }
 
 class ViewModel {
@@ -30,6 +33,18 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel {
+        return interactor.createNewProduct(id: id, nameProduct: nameProduct, phoneNumber: phoneNumber, overview: overview)
+    }
+    
+    func getImageFromLocalFile(imageId: String) -> UIImage? {
+        interactor.getImageFromLocalFile(imageId: imageId)
+    }
+    
+    func saveImageInLocalFile(image: UIImage, imageId: String) {
+        interactor.saveImageInLocalFile(image: image, imageId: imageId)
+    }
+    
     var rxProduct: RxSwift.Observable<ProductModel> {
         return interactor.rxProduct.asObservable()
     }
@@ -61,7 +76,7 @@ extension ViewModel: ViewModelProtocol {
     func presentHomeView() {
         coordinator.presentHomeView(with: self)
     }
-    func presentProductDetailController(for product: ProductModel) {
-        coordinator.presentProductDetail(for: product, with: self)
+    func presentProductDetailController(for product: ProductModel, image: UIImage?) {
+        coordinator.presentProductDetail(for: product, with: self, image: image)
     }
 }
