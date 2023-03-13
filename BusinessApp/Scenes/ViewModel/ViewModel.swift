@@ -11,6 +11,7 @@ import RxSwift
 
 protocol ViewModelProtocol {
     var rxProduct: Observable<ProductModel> { get }
+    var productDeleted: Observable<ProductModel> { get }
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
@@ -21,6 +22,7 @@ protocol ViewModelProtocol {
     func getImageFromLocalFile(imageId: String) -> UIImage?
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
+    func DeleteProductFromDb(id: Int32)
 }
 
 class ViewModel {
@@ -33,6 +35,14 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    var productDeleted: RxSwift.Observable<ProductModel> {
+        return interactor.productDeleted.asObservable()
+    }
+    
+    func DeleteProductFromDb(id: Int32) {
+        interactor.DeleteProductFromDb(id: id)
+    }
+    
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel {
         return interactor.createNewProduct(id: id, nameProduct: nameProduct, phoneNumber: phoneNumber, overview: overview)
     }

@@ -31,7 +31,18 @@ class HomeBusinnesViewController: UIViewController {
         view.backgroundColor = UIColor.white
         navigationBar()
         makeConstraints()
+        rxAddProduct()
+        rxDeleteProduct()
         getProductsFromDb()
+       
+    }
+    func rxDeleteProduct() {
+        viewModel.productDeleted.asObservable()
+            .subscribe(onNext: { [weak self] product in
+                self?.homeDataSource?.deleteProduct(product: product)
+            }).disposed(by: disposeBag)
+    }
+    func rxAddProduct() {
         viewModel.rxProduct.asObservable()
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] product in
@@ -82,4 +93,5 @@ extension HomeBusinnesViewController: UICollectionViewDelegate {
         let imageId = String(indexCell + 1)
         viewModel.presentProductDetailController(for: product, image: viewModel.getImageFromLocalFile(imageId: imageId))
     }
+    
 }

@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreData
+import RxSwift
+
 enum DataBaseError: Error {
     case notSaved
     case notDeleted
@@ -14,15 +16,18 @@ enum DataBaseError: Error {
 
 protocol DataBaseManagerProtocol {
     static var persistentContainer: NSPersistentContainer { get }
+    var productDeleted: PublishSubject<ProductModel> { get }
     func getContext() -> NSManagedObjectContext
     func saveContext() throws
     // save product
     func saveProductInDb(product: ProductModel) throws
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
+    func deleteProductWithId(id: Int32)
 }
 
 class DataBaseManager {
+    var productDeleted = PublishSubject<ProductModel>()
     static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "ProductModelDb")
         container.loadPersistentStores(completionHandler: { (description, error) in
@@ -36,6 +41,23 @@ class DataBaseManager {
 }
 
 extension DataBaseManager: DataBaseManagerProtocol {
+    func deleteProductWithId(id: Int32) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
+        fetchRequest.predicate = NSPredicate(format: "id == %i", id)
+        do {
+            guard let productResult = try self.getContext().fetch(fetchRequest).first as? ProductCoreData else {
+                return
+            }
+            getContext().delete(productResult)
+            let product = ProductModel(productCoreData: productResult)
+            productDeleted.onNext(product)
+            try self.saveContext()
+        } catch {
+            
+        }
+        
+    }
+    
     func getLastIdFromDb() -> Int32 {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
         guard let productResult = try? self.getContext().fetch(fetchRequest) as? [ProductCoreData], let lastId = productResult.last?.id else {
@@ -75,7 +97,7 @@ extension DataBaseManager: DataBaseManagerProtocol {
             do {
                 try context.save()
             } catch {
-                let nserror = error as NSError
+                _ = error as NSError
                 throw DataBaseError.notSaved
             }
         }

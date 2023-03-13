@@ -26,7 +26,18 @@ class HomeDataSource {
         self.products = products
         self.viewModel = viewModel
         registerCell(collection: collectionView, identifier: HomeBusinessCell.identifier)
+//        checkProducts()
     }
+//    private func checkProducts() {
+//        viewModel.getProductsFromDb(completion: { [weak self] productsFromDb in
+//            if self?.products == productsFromDb {
+//                print("is equals products, in  data source")
+//            } else {
+//                self?.products = productsFromDb
+//                self?.applySnapshot()
+//            }
+//        })
+//    }
     private func registerCell(collection: UICollectionView, identifier: String) {
         let nib = UINib(nibName: identifier, bundle: nil)
         collection.register(nib, forCellWithReuseIdentifier: identifier )
@@ -52,6 +63,13 @@ class HomeDataSource {
         var snapshot = dataSource.snapshot()
         snapshot.appendItems([newProduct.id], toSection: .home)
         self.dataSource.apply(snapshot, animatingDifferences: true)
+    }
+    func deleteProduct(product: ProductModel) {
+        products = products.filter({ $0.id != product.id})
+        print(products)
+        var snapshot = dataSource.snapshot()
+        snapshot.deleteItems([product.id])
+        self.applySnapshot()
     }
 }
 extension HomeDataSource: HomeDataSourceProtocol {

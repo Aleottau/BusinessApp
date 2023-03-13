@@ -10,12 +10,14 @@ import RxSwift
 
 protocol InteractorProtocol {
     var rxProduct: PublishSubject<ProductModel> { get }
+    var productDeleted: Observable<ProductModel> { get }
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
     func getImageFromLocalFile(imageId: String) -> UIImage?
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
+    func DeleteProductFromDb(id: Int32)
 }
 
 class Interactor {
@@ -29,6 +31,14 @@ class Interactor {
     
 }
 extension Interactor: InteractorProtocol {
+    var productDeleted: RxSwift.Observable<ProductModel> {
+        return dataBaseManager.productDeleted.asObservable()
+    }
+
+    func DeleteProductFromDb(id: Int32) {
+        dataBaseManager.deleteProductWithId(id: id)
+    }
+    
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel {
         return ProductModel(id: id, nameProduct: nameProduct, phoneNumber: phoneNumber, overview: overview)
     }

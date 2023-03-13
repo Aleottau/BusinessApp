@@ -38,6 +38,7 @@ class ProductDetailController: UIViewController {
         view.backgroundColor = UIColor.white
         makeConstraints()
         setUpViewComponents()
+        deleteButtonAction()
     }
     private func setUpViewComponents() {
         lineTopImageDivision.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -124,8 +125,8 @@ class ProductDetailController: UIViewController {
         buttonDelete.snp.makeConstraints { make in
             make.height.equalTo(40)
             make.top.equalTo(scoreTitle.snp.bottom).offset(100)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.equalToSuperview().inset(50)
         }
     }
     private func nameOfProductConfig(label: UILabel, text: String) {
@@ -151,11 +152,18 @@ class ProductDetailController: UIViewController {
         label.text = text
         label.font = UIFont.systemFont(ofSize: 17, weight: .regular)
     }
-    func buttonDeleteConfig(button: UIButton) {
+    private func buttonDeleteConfig(button: UIButton) {
         var buttonConfig = UIButton.Configuration.filled()
         buttonConfig.cornerStyle = .capsule
         buttonConfig.background.backgroundColor = #colorLiteral(red: 0.8837971091, green: 0, blue: 0.02211552672, alpha: 1)
         button.configuration = buttonConfig
         button.setTitle("Eliminar Producto", for: .normal)
+    }
+    private func deleteButtonAction() {
+        buttonDelete.addTarget(self, action: #selector(pressDeleteButton), for: .touchUpInside)
+    }
+    @objc private func pressDeleteButton() {
+        viewModel.DeleteProductFromDb(id: product.id)
+        viewModel.presentHomeView()
     }
 }
