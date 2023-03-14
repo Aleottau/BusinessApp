@@ -18,6 +18,7 @@ protocol InteractorProtocol {
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
     func DeleteProductFromDb(id: Int32)
+    func saveCalification(with id: Int32, calification: Int32)
 }
 
 class Interactor {
@@ -31,6 +32,10 @@ class Interactor {
     
 }
 extension Interactor: InteractorProtocol {
+    func saveCalification(with id: Int32, calification: Int32) {
+        dataBaseManager.saveCalification(with: id, calification: calification)
+    }
+    
     var productDeleted: RxSwift.Observable<ProductModel> {
         return dataBaseManager.productDeleted.asObservable()
     }

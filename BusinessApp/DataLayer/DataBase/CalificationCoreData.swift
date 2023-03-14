@@ -13,7 +13,7 @@ class CalificationCoreData: NSManagedObject {
     let productKey = "product"
     
     convenience init?(managedObjectContext: NSManagedObjectContext) {
-       let entityDescription = NSEntityDescription.entity(forEntityName: "ProductCoreData",
+       let entityDescription = NSEntityDescription.entity(forEntityName: "CalificationCoreData",
                                                       in: managedObjectContext)
        guard let entityDescription = entityDescription else {
            return nil
@@ -29,7 +29,7 @@ class CalificationCoreData: NSManagedObject {
 //    func addToDetail(_ value: ProductCoreData) {
 //        let productRelation = mutableSetValue(forKey: productKey)
 //        productRelation.add(value)
-//        detail = movieRelation as! Set<MovieDetailCoreData>
+//        product = productRelation as! Set<MovieDetailCoreData>
 //    }
 //
 //    func removeFromDetail(_ value: ProductCoreData) {

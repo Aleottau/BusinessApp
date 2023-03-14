@@ -24,6 +24,7 @@ protocol ViewModelProtocol {
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
     func DeleteProductFromDb(id: Int32)
+    func saveCalification(with id: Int32, calification: Int32)
 }
 
 class ViewModel {
@@ -36,6 +37,10 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    func saveCalification(with id: Int32, calification: Int32) {
+        interactor.saveCalification(with: id, calification: calification)
+    }
+    
     func presentCalificationView() {
         coordinator.presentCalificationView(with: self)
     }

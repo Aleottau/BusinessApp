@@ -39,7 +39,7 @@ class CalificationView: UIView {
         starsButtonsConfig(button: fourthStar, imageSystem: "star")
         starsButtonsConfig(button: fifthStar, imageSystem: "star")
         saveButtonConfig(button: saveButton, setTitle: "Guardar")
-        saveButton.addTarget(self, action: #selector(pressButton), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(pressSaveButton), for: .touchUpInside)
         firstStar.addTarget(self, action: #selector(pressFirstStar), for: .touchUpInside)
         secondStar.addTarget(self, action: #selector(pressSecondStar), for: .touchUpInside)
         thirdStar.addTarget(self, action: #selector(pressThirdStar), for: .touchUpInside)
@@ -122,9 +122,19 @@ class CalificationView: UIView {
         button.configuration = buttonConfig
     }
     
-    @objc private func pressButton() {
-        configAllComponentsInPrincipalView()
-        self.removeFromSuperview()
+    @objc private func pressSaveButton() {
+        if currentVote == nil {
+            configAllComponentsInPrincipalView()
+            self.removeFromSuperview()
+        } else {
+            guard let id = detailController?.product.id, let currentVote = self.currentVote else {
+               return
+            }
+            detailController?.viewModel.saveCalification(with: id, calification: currentVote)
+            configAllComponentsInPrincipalView()
+            self.removeFromSuperview()
+        }
+        
         
     }
     private func configAllComponentsInPrincipalView() {

@@ -24,6 +24,8 @@ protocol DataBaseManagerProtocol {
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
     func deleteProductWithId(id: Int32)
+    func saveCalification(with id: Int32, calification: Int32)
+    func getAverageFromCalifications(idProduct: Int32)
 }
 
 class DataBaseManager {
@@ -41,6 +43,34 @@ class DataBaseManager {
 }
 
 extension DataBaseManager: DataBaseManagerProtocol {
+    func getAverageFromCalifications(idProduct: Int32) {
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CalificationCoreData")
+//        fetchRequest.predicate = NSPredicate(format: "product == %i", idProduct)
+//        do {
+//            guard let calificationResult = try self.getContext().fetch(fetchRequest) as? CalificationCoreData else {
+//                return
+//            }
+//            
+//        } catch {
+//            
+//        }
+    }
+    
+    func saveCalification(with id: Int32, calification: Int32) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
+        fetchRequest.predicate = NSPredicate(format: "id == %i", id)
+        do {
+            guard let productResult = try self.getContext().fetch(fetchRequest).first as? ProductCoreData, let calificationCd = CalificationCoreData(managedObjectContext: self.getContext())  else {
+                return
+            }
+            calificationCd.addData(with: calification)
+            productResult.addToCalifications(calificationCd)
+            try self.saveContext()
+            self.getContext().reset()
+        } catch {
+        }
+    }
+    
     func deleteProductWithId(id: Int32) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
         fetchRequest.predicate = NSPredicate(format: "id == %i", id)

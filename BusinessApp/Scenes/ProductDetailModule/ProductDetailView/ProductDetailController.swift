@@ -268,7 +268,7 @@ class ProductDetailController: UIViewController {
             make.top.equalToSuperview().offset(250)
             make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().inset(50)
-            make.bottom.equalToSuperview().inset(300)
+            make.bottom.equalToSuperview().inset(350)
         }
     }
     private func allComponentsConfigWhenPressCalificationButton() {
