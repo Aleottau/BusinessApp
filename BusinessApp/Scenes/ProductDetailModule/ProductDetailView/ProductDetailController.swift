@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class ProductDetailController: UIViewController {
+
     var productImage =  UIImageView()
     var lineTopImageDivision = UIImageView()
     var nameOfProduct = UILabel()
@@ -18,9 +19,17 @@ class ProductDetailController: UIViewController {
     var phoneNumber = UILabel()
     var lineBottonPhoneNumber = UIImageView()
     var scoreTitle = UILabel()
+    var buttonCalification = UIButton()
     var buttonDelete = UIButton()
     var product: ProductModel
     let viewModel: ViewModelProtocol
+    
+    var firstStar = UIButton()
+    var secondStar = UIButton()
+    var thirdStar = UIButton()
+    var fourthStar = UIButton()
+    var fifthStar = UIButton()
+    var voteCount =  UILabel()
     
     init(product: ProductModel, viewModel: ViewModelProtocol, image: UIImage?) {
         self.product = product
@@ -38,7 +47,10 @@ class ProductDetailController: UIViewController {
         view.backgroundColor = UIColor.white
         makeConstraints()
         setUpViewComponents()
-        deleteButtonAction()
+        addButtonsActions()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     private func setUpViewComponents() {
         lineTopImageDivision.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -49,7 +61,14 @@ class ProductDetailController: UIViewController {
         phoneNumberConfig(label: phoneNumber, text: product.phoneNumber)
         lineBottonPhoneNumber.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         defualtTitleConfig(label: scoreTitle, text: "Calificación")
+        buttonCalificationConfig(button: buttonCalification)
         buttonDeleteConfig(button: buttonDelete)
+        starsButtonsConfig(button: firstStar)
+        starsButtonsConfig(button: secondStar)
+        starsButtonsConfig(button: thirdStar)
+        starsButtonsConfig(button: fourthStar)
+        starsButtonsConfig(button: fifthStar)
+        voteCountConfig(label: voteCount, text: "(30)")
     }
     
     private func makeConstraints() {
@@ -62,6 +81,13 @@ class ProductDetailController: UIViewController {
         view.addSubview(phoneNumber)
         view.addSubview(lineBottonPhoneNumber)
         view.addSubview(scoreTitle)
+        view.addSubview(firstStar)
+        view.addSubview(secondStar)
+        view.addSubview(thirdStar)
+        view.addSubview(fourthStar)
+        view.addSubview(fifthStar)
+        view.addSubview(voteCount)
+        view.addSubview(buttonCalification)
         view.addSubview(buttonDelete)
         productImage.translatesAutoresizingMaskIntoConstraints = false
         lineTopImageDivision.translatesAutoresizingMaskIntoConstraints = false
@@ -72,6 +98,13 @@ class ProductDetailController: UIViewController {
         phoneNumber.translatesAutoresizingMaskIntoConstraints = false
         lineBottonPhoneNumber.translatesAutoresizingMaskIntoConstraints = false
         scoreTitle.translatesAutoresizingMaskIntoConstraints = false
+        firstStar.translatesAutoresizingMaskIntoConstraints = false
+        secondStar.translatesAutoresizingMaskIntoConstraints = false
+        thirdStar.translatesAutoresizingMaskIntoConstraints = false
+        fourthStar.translatesAutoresizingMaskIntoConstraints = false
+        fifthStar.translatesAutoresizingMaskIntoConstraints = false
+        voteCount.translatesAutoresizingMaskIntoConstraints = false
+        buttonCalification.translatesAutoresizingMaskIntoConstraints = false
         buttonDelete.translatesAutoresizingMaskIntoConstraints = false
         productImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(100)
@@ -122,9 +155,41 @@ class ProductDetailController: UIViewController {
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().inset(30)
         }
+        firstStar.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalToSuperview().offset(50)
+        }
+        secondStar.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalTo(firstStar.snp.trailing)
+        }
+        thirdStar.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalTo(secondStar.snp.trailing)
+        }
+        fourthStar.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalTo(thirdStar.snp.trailing)
+        }
+        fifthStar.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalTo(fourthStar.snp.trailing)
+            make.trailing.equalToSuperview().inset(202)
+        }
+        voteCount.snp.makeConstraints { make in
+            make.top.equalTo(scoreTitle.snp.bottom).offset(20)
+            make.leading.equalTo(fifthStar.snp.trailing).offset(20)
+            make.trailing.equalToSuperview().inset(30)
+        }
+        buttonCalification.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.top.equalTo(firstStar.snp.bottom).offset(100)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.equalToSuperview().inset(50)
+        }
         buttonDelete.snp.makeConstraints { make in
             make.height.equalTo(40)
-            make.top.equalTo(scoreTitle.snp.bottom).offset(100)
+            make.top.equalTo(buttonCalification.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(50)
             make.trailing.equalToSuperview().inset(50)
         }
@@ -134,6 +199,12 @@ class ProductDetailController: UIViewController {
         label.numberOfLines = 0
         label.text = text
         label.font = UIFont.systemFont(ofSize: 21, weight: .bold)
+    }
+    private func voteCountConfig(label: UILabel, text: String) {
+        label.textAlignment = .left
+        label.numberOfLines = 1
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
     }
     private func overviewConfig(label: UILabel, text: String) {
         label.textAlignment = .left
@@ -159,11 +230,57 @@ class ProductDetailController: UIViewController {
         button.configuration = buttonConfig
         button.setTitle("Eliminar Producto", for: .normal)
     }
-    private func deleteButtonAction() {
+    private func buttonCalificationConfig(button: UIButton) {
+        var buttonConfig = UIButton.Configuration.filled()
+        buttonConfig.cornerStyle = .capsule
+        buttonConfig.background.backgroundColor = #colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)
+        button.configuration = buttonConfig
+        button.setTitle("Agregar calificación", for: .normal)
+    }
+    private func starsButtonsConfig(button: UIButton) {
+        var config = UIButton.Configuration.plain()
+        config.imagePlacement = .all
+        config.image = UIImage(systemName: "star")
+        config.imagePadding = .zero
+        config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+        button.configuration = config
+        button.tintColor = UIColor.black
+    }
+    private func addButtonsActions() {
         buttonDelete.addTarget(self, action: #selector(pressDeleteButton), for: .touchUpInside)
+        buttonCalification.addTarget(self, action: #selector(pressCalificationButton), for: .touchUpInside)
     }
     @objc private func pressDeleteButton() {
         viewModel.DeleteProductFromDb(id: product.id)
         viewModel.presentHomeView()
     }
+    @objc private func pressCalificationButton() {
+//        viewModel.presentCalificationView()
+        allComponentsConfigWhenPressCalificationButton()
+        showAlert()
+    }
+    private func showAlert() {
+        let alertView = CalificationView(detailController: self)
+        alertView.backgroundColor = .white
+        view.addSubview(alertView)
+        alertView.translatesAutoresizingMaskIntoConstraints = false
+        alertView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(250)
+            make.leading.equalToSuperview().offset(50)
+            make.trailing.equalToSuperview().inset(50)
+            make.bottom.equalToSuperview().inset(300)
+        }
+    }
+    private func allComponentsConfigWhenPressCalificationButton() {
+        view.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
+        buttonDelete.isEnabled = false
+        buttonDelete.alpha = 0.5
+        buttonCalification.isEnabled = false
+        buttonCalification.alpha = 0.5
+        productImage.alpha = 0.5
+        lineTopImageDivision.backgroundColor = UIColor(white: 0.4, alpha: 0.8)
+        lineBetweenOverviewPhoneNumer.backgroundColor = UIColor(white: 0.4, alpha: 0.8)
+        lineBottonPhoneNumber.backgroundColor = UIColor(white: 0.4, alpha: 0.8)
+    }
+    
 }

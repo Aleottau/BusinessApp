@@ -13,6 +13,8 @@ class ProductCoreData: NSManagedObject {
     @NSManaged var nameProduct: String
     @NSManaged var phoneNumber: String
     @NSManaged var overview: String
+    @NSManaged var califications: Set<CalificationCoreData>
+    let calificationsKey = "califications"
     
     convenience init?(managedObjectContext: NSManagedObjectContext) {
        let entityDescription = NSEntityDescription.entity(forEntityName: "ProductCoreData",
@@ -28,5 +30,31 @@ class ProductCoreData: NSManagedObject {
         self.nameProduct = product.nameProduct
         self.phoneNumber = product.phoneNumber
         self.overview = product.overview
+    }
+    
+    
+    func addToCalifications(_ value: CalificationCoreData) {
+        let calificationsRelation = mutableSetValue(forKey: calificationsKey)
+        calificationsRelation.add(value)
+        califications = calificationsRelation as! Set<CalificationCoreData>
+    }
+
+    func removeFromCalifications(_ value: CalificationCoreData) {
+        let calificationsRelation = mutableSetValue(forKey: calificationsKey)
+        calificationsRelation.remove(value)
+        califications = calificationsRelation as! Set<CalificationCoreData>
+    }
+
+    func addToCalifications(_ values: Set<CalificationCoreData>) {
+        let calificationsRelation = mutableSetValue(forKey: calificationsKey)
+        let calificationsCd: [Any] = values.map { $0 }
+        calificationsRelation.addObjects(from: calificationsCd)
+        califications = calificationsRelation as! Set<CalificationCoreData>
+    }
+
+    func removeFromCalifications(_ values: Set<CalificationCoreData>) {
+        let calificationsRelation = mutableSetValue(forKey: calificationsKey)
+        _ = values.map { calificationsRelation.remove($0) }
+        califications = calificationsRelation as! Set<CalificationCoreData>
     }
 }

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="22D68" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CalificationCoreData" representedClassName=".CalificationCoreData" syncable="YES">
+        <attribute name="calification" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="product" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ProductCoreData" inverseName="califications" inverseEntity="ProductCoreData"/>
+    </entity>
     <entity name="ProductCoreData" representedClassName=".ProductCoreData" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="nameProduct" optional="YES" attributeType="String"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
+        <relationship name="califications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CalificationCoreData" inverseName="product" inverseEntity="CalificationCoreData"/>
     </entity>
 </model>

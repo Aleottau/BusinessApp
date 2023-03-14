@@ -15,6 +15,7 @@ protocol ViewModelProtocol {
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
+    func presentCalificationView()
     func presentProductDetailController(for product: ProductModel, image: UIImage?)
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
@@ -35,6 +36,10 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    func presentCalificationView() {
+        coordinator.presentCalificationView(with: self)
+    }
+    
     var productDeleted: RxSwift.Observable<ProductModel> {
         return interactor.productDeleted.asObservable()
     }
