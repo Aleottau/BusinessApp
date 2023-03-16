@@ -10,6 +10,6 @@
         <attribute name="nameProduct" optional="YES" attributeType="String"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
         <attribute name="phoneNumber" optional="YES" attributeType="String"/>
-        <relationship name="califications" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CalificationCoreData" inverseName="product" inverseEntity="CalificationCoreData"/>
+        <relationship name="califications" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CalificationCoreData" inverseName="product" inverseEntity="CalificationCoreData"/>
     </entity>
 </model>

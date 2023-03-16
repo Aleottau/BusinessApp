@@ -7,9 +7,11 @@
 
 import UIKit
 import SnapKit
+import RxSwift
 
 class ProductDetailController: UIViewController {
 
+    let disposeBag = DisposeBag()
     var productImage =  UIImageView()
     var lineTopImageDivision = UIImageView()
     var nameOfProduct = UILabel()
@@ -48,10 +50,64 @@ class ProductDetailController: UIViewController {
         makeConstraints()
         setUpViewComponents()
         addButtonsActions()
+        getCalificationFromDb()
+        rxGetCalification()
     }
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    private func getCalificationFromDb() {
+        guard let calification = viewModel.getCalificationFromDb(idProduct: product.id) else {
+            return
+        }
+        rxConfigComponents(calificationModel: calification)
     }
+    private func rxGetCalification() {
+        viewModel.rxCalification
+            .asObservable()
+            .subscribe(onNext: { [weak self] calificacion in
+                self?.rxConfigComponents(calificationModel: calificacion)
+        }).disposed(by: disposeBag)
+    }
+    private func rxConfigComponents(calificationModel: CalificationModel) {
+        switch calificationModel.promedio {
+        case 1:
+            starsButtonsConfig(button: firstStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: secondStar, imageSystemName: "star")
+            starsButtonsConfig(button: thirdStar, imageSystemName: "star")
+            starsButtonsConfig(button: fourthStar, imageSystemName: "star")
+            starsButtonsConfig(button: fifthStar, imageSystemName: "star")
+            voteCountConfig(label: voteCount, text: "(\(String(calificationModel.cantidadDeVotos)))")
+        case 2:
+            starsButtonsConfig(button: firstStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: secondStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: thirdStar, imageSystemName: "star")
+            starsButtonsConfig(button: fourthStar, imageSystemName: "star")
+            starsButtonsConfig(button: fifthStar, imageSystemName: "star")
+            voteCountConfig(label: voteCount, text: "(\(String(calificationModel.cantidadDeVotos)))")
+        case 3:
+            starsButtonsConfig(button: firstStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: secondStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: thirdStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: fourthStar, imageSystemName: "star")
+            starsButtonsConfig(button: fifthStar, imageSystemName: "star")
+            voteCountConfig(label: voteCount, text: "(\(String(calificationModel.cantidadDeVotos)))")
+        case 4:
+            starsButtonsConfig(button: firstStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: secondStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: thirdStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: fourthStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: fifthStar, imageSystemName: "star")
+            voteCountConfig(label: voteCount, text: "(\(String(calificationModel.cantidadDeVotos)))")
+        case 5:
+            starsButtonsConfig(button: firstStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: secondStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: thirdStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: fourthStar, imageSystemName: "star.fill")
+            starsButtonsConfig(button: fifthStar, imageSystemName: "star.fill")
+            voteCountConfig(label: voteCount, text: "(\(String(calificationModel.cantidadDeVotos)))")
+        default:
+            print("default swift rxCalification")
+        }
+    }
+    
     private func setUpViewComponents() {
         lineTopImageDivision.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         nameOfProductConfig(label: nameOfProduct, text: product.nameProduct)
@@ -63,12 +119,12 @@ class ProductDetailController: UIViewController {
         defualtTitleConfig(label: scoreTitle, text: "Calificación")
         buttonCalificationConfig(button: buttonCalification)
         buttonDeleteConfig(button: buttonDelete)
-        starsButtonsConfig(button: firstStar)
-        starsButtonsConfig(button: secondStar)
-        starsButtonsConfig(button: thirdStar)
-        starsButtonsConfig(button: fourthStar)
-        starsButtonsConfig(button: fifthStar)
-        voteCountConfig(label: voteCount, text: "(30)")
+        starsButtonsConfig(button: firstStar, imageSystemName: "star")
+        starsButtonsConfig(button: secondStar, imageSystemName: "star")
+        starsButtonsConfig(button: thirdStar, imageSystemName: "star")
+        starsButtonsConfig(button: fourthStar, imageSystemName: "star")
+        starsButtonsConfig(button: fifthStar, imageSystemName: "star")
+        voteCountConfig(label: voteCount, text: "(0)")
     }
     
     private func makeConstraints() {
@@ -237,10 +293,10 @@ class ProductDetailController: UIViewController {
         button.configuration = buttonConfig
         button.setTitle("Agregar calificación", for: .normal)
     }
-    private func starsButtonsConfig(button: UIButton) {
+    private func starsButtonsConfig(button: UIButton, imageSystemName: String) {
         var config = UIButton.Configuration.plain()
         config.imagePlacement = .all
-        config.image = UIImage(systemName: "star")
+        config.image = UIImage(systemName: imageSystemName)
         config.imagePadding = .zero
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
         button.configuration = config

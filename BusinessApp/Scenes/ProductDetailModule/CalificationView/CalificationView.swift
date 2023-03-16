@@ -130,12 +130,10 @@ class CalificationView: UIView {
             guard let id = detailController?.product.id, let currentVote = self.currentVote else {
                return
             }
-            detailController?.viewModel.saveCalification(with: id, calification: currentVote)
+            detailController?.viewModel.saveCalification(with: id, currentVote: currentVote)
             configAllComponentsInPrincipalView()
             self.removeFromSuperview()
         }
-        
-        
     }
     private func configAllComponentsInPrincipalView() {
         detailController?.view.backgroundColor = UIColor(white: 1, alpha: 1)

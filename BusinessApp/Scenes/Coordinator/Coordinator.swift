@@ -13,7 +13,6 @@ protocol CoordinatorProtocol {
     func presentAddProduct(with viewModel: ViewModel)
     func presentProductDetail(for product: ProductModel, with viewModel: ViewModel, image: UIImage?)
     func presentHomeView(with viewModel: ViewModel)
-    func presentCalificationView(with viewModel: ViewModel)
 }
 class Coordinator {
     var navigation: UINavigationController
@@ -23,14 +22,7 @@ class Coordinator {
 }
 
 extension Coordinator: CoordinatorProtocol {
-    func presentCalificationView(with viewModel: ViewModel) {
-        let calificationView = CalificationViewController(viewModel: viewModel)
-//        calificationView.modalPresentationStyle = .
-//        calificationView.modalTransitionStyle = .flipHorizontal
-        navigation.present(calificationView, animated: true)
-    }
-    
-    
+
     func initialController(with viewModel: ViewModel) -> UIViewController {
         let HomeBusinnesViewController = HomeBusinnesViewController(viewModel: viewModel)
         navigation.setViewControllers([HomeBusinnesViewController], animated: false)

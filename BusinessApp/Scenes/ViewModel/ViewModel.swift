@@ -10,12 +10,12 @@ import UIKit
 import RxSwift
 
 protocol ViewModelProtocol {
+    var rxCalification: Observable<CalificationModel> { get }
     var rxProduct: Observable<ProductModel> { get }
     var productDeleted: Observable<ProductModel> { get }
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
-    func presentCalificationView()
     func presentProductDetailController(for product: ProductModel, image: UIImage?)
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
@@ -24,7 +24,9 @@ protocol ViewModelProtocol {
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
     func DeleteProductFromDb(id: Int32)
-    func saveCalification(with id: Int32, calification: Int32)
+    func saveCalification(with id: Int32, currentVote: Int32)
+    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel
+    func getCalificationFromDb(idProduct: Int32) -> CalificationModel?
 }
 
 class ViewModel {
@@ -37,12 +39,20 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
-    func saveCalification(with id: Int32, calification: Int32) {
-        interactor.saveCalification(with: id, calification: calification)
+    func getCalificationFromDb(idProduct: Int32) -> CalificationModel? {
+        return interactor.getCalificationFromDb(idProduct: idProduct)
     }
     
-    func presentCalificationView() {
-        coordinator.presentCalificationView(with: self)
+    var rxCalification: RxSwift.Observable<CalificationModel> {
+        return interactor.rxCalification.asObservable()
+    }
+    
+    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel {
+        return interactor.createCalification(cantidadDeVotos: cantidadDeVotos, promedio: promedio)
+    }
+    
+    func saveCalification(with id: Int32, currentVote: Int32) {
+        interactor.saveCalification(with: id, currentVote: currentVote)
     }
     
     var productDeleted: RxSwift.Observable<ProductModel> {
