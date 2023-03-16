@@ -20,7 +20,6 @@ protocol InteractorProtocol {
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
     func DeleteProductFromDb(id: Int32)
     func saveCalification(with id: Int32, currentVote: Int32)
-    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel?
     func deleteImageFromLocalFile(idProduct: Int32)
 }
@@ -44,25 +43,15 @@ extension Interactor: InteractorProtocol {
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel? {
         return dataBaseManager.getCalificationFromDb(idProduct: idProduct)
     }
-    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel {
-        return CalificationModel(cantidadDeVotos: cantidadDeVotos, promedio: promedio)
-    }
-    
     func saveCalification(with id: Int32, currentVote: Int32) {
         guard let voteCount = dataBaseManager.getVoteCount(idProduct: id), let averageFromCalification = dataBaseManager.getAverageFromCalifications(idProduct: id) else {
             return
         }
         do {
-            if averageFromCalification == 0 {
-                let newCalification = self.createCalification(cantidadDeVotos: voteCount, promedio: currentVote)
-                try dataBaseManager.saveCalification(id: id, calificationModel: newCalification)
-                rxCalification.onNext(newCalification)
-            } else {
-                let average = (averageFromCalification + currentVote)/2
-                let newCalification = self.createCalification(cantidadDeVotos: voteCount, promedio: average)
-                try dataBaseManager.saveCalification(id: id, calificationModel: newCalification)
-                rxCalification.onNext(newCalification)
-            }
+            let average = (averageFromCalification == 0) ? currentVote : (averageFromCalification + currentVote)/2
+            let newCalification = CalificationModel(idProduct: id, cantidadDeVotos: voteCount, promedio: average)
+            try dataBaseManager.saveCalification(id: id, calificationModel: newCalification)
+            rxCalification.onNext(newCalification)
         } catch {
         }
         

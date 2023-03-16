@@ -28,6 +28,10 @@ class HomeDataSource {
         self.products = products
         self.viewModel = viewModel
         registerCell(collection: collectionView, identifier: HomeBusinessCell.identifier)
+        viewModel.rxCalification.asObservable()
+            .subscribe(onNext: { [weak self] calification in
+                self?.update(calification: calification)
+            }).disposed(by: disposeBag)
     }
     private func registerCell(collection: UICollectionView, identifier: String) {
         let nib = UINib(nibName: identifier, bundle: nil)
@@ -43,7 +47,6 @@ class HomeDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeBusinessCell.identifier, for: indexPath) as? HomeBusinessCell, let product = self?.modelFrom(itemIdentifier: itemIdentifier) else {
                 return UICollectionViewCell()
             }
-            self?.rxCalification(itemIdentifier: itemIdentifier, cell: cell)
             let imageFromLocalFile = self?.viewModel.getImageFromLocalFile(imageId: String(itemIdentifier))
             cell.setProductModel(model: product, imageFromLocalFile: imageFromLocalFile)
             cell.setCalificationModel(model: self?.viewModel.getCalificationFromDb(idProduct: itemIdentifier))
@@ -51,11 +54,10 @@ class HomeDataSource {
         }
         return dataSource
     }
-    func rxCalification(itemIdentifier: Int32, cell: HomeBusinessCell) {
-        viewModel.rxCalification.asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                cell.setCalificationModel(model: self?.viewModel.getCalificationFromDb(idProduct: itemIdentifier))
-            }).disposed(by: disposeBag)
+    func update(calification: CalificationModel) {
+        var snapshot = dataSource.snapshot()
+        snapshot.reloadItems([calification.idProduct])
+        dataSource.apply(snapshot)
     }
     func addProduct(newProduct: ProductModel) {
         products.append(newProduct)

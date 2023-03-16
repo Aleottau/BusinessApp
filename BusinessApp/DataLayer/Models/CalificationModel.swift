@@ -8,11 +8,12 @@
 import Foundation
 
 struct CalificationModel {
+    let idProduct: Int32
     let cantidadDeVotos: Int32
     let promedio: Int32
 }
 extension CalificationModel {
     init(calificacionCoreData: CalificationCoreData) {
-        self.init(cantidadDeVotos: calificacionCoreData.cantidadDeVotos, promedio: calificacionCoreData.promedio)
+        self.init(idProduct: calificacionCoreData.product.id, cantidadDeVotos: calificacionCoreData.cantidadDeVotos, promedio: calificacionCoreData.promedio)
     }
 }

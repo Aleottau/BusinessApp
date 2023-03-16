@@ -25,7 +25,6 @@ protocol ViewModelProtocol {
     func createNewProduct(id: Int32, nameProduct: String, phoneNumber: String, overview: String) -> ProductModel
     func DeleteProductFromDb(id: Int32)
     func saveCalification(with id: Int32, currentVote: Int32)
-    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel?
     func deleteImageFromLocalFile(idProduct: Int32)
 }
@@ -51,11 +50,6 @@ extension ViewModel: ViewModelProtocol {
     var rxCalification: RxSwift.Observable<CalificationModel> {
         return interactor.rxCalification.asObservable()
     }
-    
-    func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel {
-        return interactor.createCalification(cantidadDeVotos: cantidadDeVotos, promedio: promedio)
-    }
-    
     func saveCalification(with id: Int32, currentVote: Int32) {
         interactor.saveCalification(with: id, currentVote: currentVote)
     }
