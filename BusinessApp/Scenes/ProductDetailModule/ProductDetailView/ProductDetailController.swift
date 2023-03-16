@@ -311,7 +311,6 @@ class ProductDetailController: UIViewController {
         viewModel.presentHomeView()
     }
     @objc private func pressCalificationButton() {
-//        viewModel.presentCalificationView()
         allComponentsConfigWhenPressCalificationButton()
         showAlert()
     }

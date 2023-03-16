@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 protocol HomeDataSourceProtocol {
     var dataSource: HomeDataSource.DiffDataSource { get }
@@ -14,6 +15,7 @@ protocol HomeDataSourceProtocol {
     
 }
 class HomeDataSource {
+    let disposeBag = DisposeBag()
     var products: [ProductModel] = []
     var collectionView: UICollectionView
     var viewModel: ViewModelProtocol
@@ -26,18 +28,7 @@ class HomeDataSource {
         self.products = products
         self.viewModel = viewModel
         registerCell(collection: collectionView, identifier: HomeBusinessCell.identifier)
-//        checkProducts()
     }
-//    private func checkProducts() {
-//        viewModel.getProductsFromDb(completion: { [weak self] productsFromDb in
-//            if self?.products == productsFromDb {
-//                print("is equals products, in  data source")
-//            } else {
-//                self?.products = productsFromDb
-//                self?.applySnapshot()
-//            }
-//        })
-//    }
     private func registerCell(collection: UICollectionView, identifier: String) {
         let nib = UINib(nibName: identifier, bundle: nil)
         collection.register(nib, forCellWithReuseIdentifier: identifier )
@@ -51,12 +42,19 @@ class HomeDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeBusinessCell.identifier, for: indexPath) as? HomeBusinessCell, let product = self?.modelFrom(itemIdentifier: itemIdentifier) else {
                 return UICollectionViewCell()
             }
-            
+            self?.rxCalification(itemIdentifier: itemIdentifier, cell: cell)
             let imageFromLocalFile = self?.viewModel.getImageFromLocalFile(imageId: String(itemIdentifier))
-            cell.setModel(model: product, imageFromLocalFile: imageFromLocalFile)
+            cell.setProductModel(model: product, imageFromLocalFile: imageFromLocalFile)
+            cell.setCalificationModel(model: self?.viewModel.getCalificationFromDb(idProduct: itemIdentifier))
             return cell
         }
         return dataSource
+    }
+    func rxCalification(itemIdentifier: Int32, cell: HomeBusinessCell) {
+        viewModel.rxCalification.asObservable()
+            .subscribe(onNext: { [weak self] _ in
+                cell.setCalificationModel(model: self?.viewModel.getCalificationFromDb(idProduct: itemIdentifier))
+            }).disposed(by: disposeBag)
     }
     func addProduct(newProduct: ProductModel) {
         products.append(newProduct)

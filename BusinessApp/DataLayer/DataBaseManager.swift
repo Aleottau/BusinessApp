@@ -19,7 +19,6 @@ protocol DataBaseManagerProtocol {
     var productDeleted: PublishSubject<ProductModel> { get }
     func getContext() -> NSManagedObjectContext
     func saveContext() throws
-    // save product
     func saveProductInDb(product: ProductModel) throws
     func getProductFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
@@ -42,7 +41,7 @@ class DataBaseManager {
         })
         return container
     }()
-    private func getCalificationCoreData(idProduct: Int32) -> CalificationCoreData? {
+    func getCalificationCoreData(idProduct: Int32) -> CalificationCoreData? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CalificationCoreData")
         fetchRequest.predicate = NSPredicate(format: "product == %i", idProduct)
         do {

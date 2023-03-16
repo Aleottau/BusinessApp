@@ -68,7 +68,6 @@ extension LocalFileManager: LocalFileManagerProtocol {
     func saveImageInLocalFile(image: UIImage, imageId: String) {
         saveImage(image: image, imageNameId: imageId + suffix)
     }
-    // photo.fill
     func getImageFromLocalFile(imageId: String) -> UIImage? {
         getImage(imageNameId: imageId + suffix)
     }

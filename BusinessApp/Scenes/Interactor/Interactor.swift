@@ -98,9 +98,6 @@ extension Interactor: InteractorProtocol {
         } catch {
             
         }
-        
-        
     }
-    
-    
+
 }
