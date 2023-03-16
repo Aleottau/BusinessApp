@@ -39,6 +39,7 @@ class HomeDataSource {
     
     private func makeDataSource() -> DiffDataSource {
         let dataSource = DiffDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, itemIdentifier in
+            print(itemIdentifier)
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeBusinessCell.identifier, for: indexPath) as? HomeBusinessCell, let product = self?.modelFrom(itemIdentifier: itemIdentifier) else {
                 return UICollectionViewCell()
             }
@@ -62,8 +63,10 @@ class HomeDataSource {
         snapshot.appendItems([newProduct.id], toSection: .home)
         self.dataSource.apply(snapshot, animatingDifferences: true)
     }
-    func deleteProduct(product: ProductModel) {
-        products = products.filter({ $0.id != product.id})
+    func deleteProduct(idProduct: Int32) {
+        guard let product = products.first(where: { $0.id == idProduct}) else {
+            return
+        }
         print(products)
         var snapshot = dataSource.snapshot()
         snapshot.deleteItems([product.id])

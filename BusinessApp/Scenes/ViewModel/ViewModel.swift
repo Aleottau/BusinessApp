@@ -12,11 +12,11 @@ import RxSwift
 protocol ViewModelProtocol {
     var rxCalification: Observable<CalificationModel> { get }
     var rxProduct: Observable<ProductModel> { get }
-    var productDeleted: Observable<ProductModel> { get }
+    var productDeleted: Observable<Int32> { get }
     func setUpInitial(windowScene: UIWindowScene) -> UIWindow
     func presentAddProduct()
     func presentHomeView()
-    func presentProductDetailController(for product: ProductModel, image: UIImage?)
+    func presentProductDetailController(for product: ProductModel)
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
@@ -27,6 +27,7 @@ protocol ViewModelProtocol {
     func saveCalification(with id: Int32, currentVote: Int32)
     func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel?
+    func deleteImageFromLocalFile(idProduct: Int32)
 }
 
 class ViewModel {
@@ -39,6 +40,10 @@ class ViewModel {
 }
 
 extension ViewModel: ViewModelProtocol {
+    func deleteImageFromLocalFile(idProduct: Int32) {
+        interactor.deleteImageFromLocalFile(idProduct: idProduct)
+    }
+    
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel? {
         return interactor.getCalificationFromDb(idProduct: idProduct)
     }
@@ -55,7 +60,7 @@ extension ViewModel: ViewModelProtocol {
         interactor.saveCalification(with: id, currentVote: currentVote)
     }
     
-    var productDeleted: RxSwift.Observable<ProductModel> {
+    var productDeleted: RxSwift.Observable<Int32> {
         return interactor.productDeleted.asObservable()
     }
     
@@ -106,7 +111,8 @@ extension ViewModel: ViewModelProtocol {
     func presentHomeView() {
         coordinator.presentHomeView(with: self)
     }
-    func presentProductDetailController(for product: ProductModel, image: UIImage?) {
-        coordinator.presentProductDetail(for: product, with: self, image: image)
+    func presentProductDetailController(for product: ProductModel) {
+        let imageFromLocalFile = interactor.getImageFromLocalFile(imageId: product.id.description)
+        coordinator.presentProductDetail(for: product, with: self, image: imageFromLocalFile)
     }
 }

@@ -16,7 +16,7 @@ enum DataBaseError: Error {
 
 protocol DataBaseManagerProtocol {
     static var persistentContainer: NSPersistentContainer { get }
-    var productDeleted: PublishSubject<ProductModel> { get }
+    var productDeleted: PublishSubject<Int32> { get }
     func getContext() -> NSManagedObjectContext
     func saveContext() throws
     func saveProductInDb(product: ProductModel) throws
@@ -30,7 +30,7 @@ protocol DataBaseManagerProtocol {
 }
 
 class DataBaseManager {
-    var productDeleted = PublishSubject<ProductModel>()
+    var productDeleted = PublishSubject<Int32>()
     static var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "ProductModelDb")
         container.loadPersistentStores(completionHandler: { (description, error) in
@@ -105,14 +105,22 @@ extension DataBaseManager: DataBaseManagerProtocol {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ProductCoreData")
         fetchRequest.predicate = NSPredicate(format: "id == %i", id)
         do {
-            guard let productResult = try self.getContext().fetch(fetchRequest).first as? ProductCoreData else {
-                return
+            let productResult = try self.getContext().fetch(fetchRequest).first as? ProductCoreData
+            if let calification = productResult?.califications {
+                guard let productResult = productResult else {
+                    return
+                }
+                getContext().delete(calification)
+                getContext().delete(productResult)
+            } else {
+                guard let productResult = productResult else {
+                    return
+                }
+                getContext().delete(productResult)
             }
-            getContext().delete(productResult.califications)
-            getContext().delete(productResult)
-            let product = ProductModel(productCoreData: productResult)
-            productDeleted.onNext(product)
             try self.saveContext()
+            productDeleted.onNext(id)
+            self.getContext().reset() 
         } catch {
             print("error de func delete product with id")
             print(error)

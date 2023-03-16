@@ -7,9 +7,12 @@
 
 import Foundation
 import UIKit
+import RxSwift
+
 protocol LocalFileManagerProtocol {
     func saveImageInLocalFile(image: UIImage, imageId: String)
     func getImageFromLocalFile(imageId: String) -> UIImage?
+    func deleteImageFromLocalFile(idProduct: Int32)
 }
 
 class LocalFileManager {
@@ -65,6 +68,17 @@ class LocalFileManager {
 }
 
 extension LocalFileManager: LocalFileManagerProtocol {
+    func deleteImageFromLocalFile(idProduct: Int32)  {
+        guard let imageURL = directoryPath?.appendingPathComponent(String(idProduct) + suffix) else {
+            return
+        }
+        do {
+            try fileManager.removeItem(at: imageURL)
+        } catch {
+            print("error al borrar image from local file")
+        }
+    }
+    
     func saveImageInLocalFile(image: UIImage, imageId: String) {
         saveImage(image: image, imageNameId: imageId + suffix)
     }

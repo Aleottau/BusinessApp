@@ -308,6 +308,7 @@ class ProductDetailController: UIViewController {
     }
     @objc private func pressDeleteButton() {
         viewModel.DeleteProductFromDb(id: product.id)
+        viewModel.deleteImageFromLocalFile(idProduct: product.id)
         viewModel.presentHomeView()
     }
     @objc private func pressCalificationButton() {

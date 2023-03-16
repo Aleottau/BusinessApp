@@ -11,7 +11,7 @@ import RxSwift
 protocol InteractorProtocol {
     var rxCalification: PublishSubject<CalificationModel> { get }
     var rxProduct: PublishSubject<ProductModel> { get }
-    var productDeleted: Observable<ProductModel> { get }
+    var productDeleted: Observable<Int32> { get }
     func saveProductInDb(product: ProductModel)
     func getProductsFromDb(completion: @escaping ([ProductModel]) -> Void)
     func getLastIdFromDb() -> Int32
@@ -22,6 +22,7 @@ protocol InteractorProtocol {
     func saveCalification(with id: Int32, currentVote: Int32)
     func createCalification(cantidadDeVotos: Int32, promedio: Int32) -> CalificationModel
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel?
+    func deleteImageFromLocalFile(idProduct: Int32)
 }
 
 class Interactor {
@@ -36,6 +37,10 @@ class Interactor {
     
 }
 extension Interactor: InteractorProtocol {
+    func deleteImageFromLocalFile(idProduct: Int32) {
+        locaFileManager.deleteImageFromLocalFile(idProduct: idProduct)
+    }
+    
     func getCalificationFromDb(idProduct: Int32) -> CalificationModel? {
         return dataBaseManager.getCalificationFromDb(idProduct: idProduct)
     }
@@ -63,7 +68,7 @@ extension Interactor: InteractorProtocol {
         
     }
     
-    var productDeleted: RxSwift.Observable<ProductModel> {
+    var productDeleted: RxSwift.Observable<Int32> {
         return dataBaseManager.productDeleted.asObservable()
     }
 

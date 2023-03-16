@@ -38,8 +38,8 @@ class HomeBusinnesViewController: UIViewController {
     }
     func rxDeleteProduct() {
         viewModel.productDeleted.asObservable()
-            .subscribe(onNext: { [weak self] product in
-                self?.homeDataSource?.deleteProduct(product: product)
+            .subscribe(onNext: { [weak self] idProduct in
+                self?.homeDataSource?.deleteProduct(idProduct: idProduct)
             }).disposed(by: disposeBag)
     }
     func rxAddProduct() {
@@ -90,8 +90,7 @@ extension HomeBusinnesViewController: UICollectionViewDelegate {
         guard let product = homeDataSource?.products[indexCell] else {
             return
         }
-        let imageId = String(indexCell + 1)
-        viewModel.presentProductDetailController(for: product, image: viewModel.getImageFromLocalFile(imageId: imageId))
+        viewModel.presentProductDetailController(for: product)
     }
     
 }
